@@ -1,0 +1,11 @@
+{
+  "name": "com.unity.render-pipelines.high-definition-config",
+  "description": "Configuration files for the High Definition Render Pipeline.",
+  "version": "17.0.4",
+  "unity": "6000.0",
+  "displayName": "High Definition Render Pipeline Config",
+  "dependencies": {
+    "com.unity.render-pipelines.core": "17.0.4"
+  },
+  "_fingerprint": "0d5d7b35c605858a7012f39429cd53385ba5ba8f"
+}

@@ -1,0 +1,79 @@
+# Unity
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/Assets/AssetStoreTools/
+/Logs/
+/MemoryCaptures/
+/PlayerData/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+
+# Unity-specific generated files
+*.unitypackage
+*.asset.meta
+*.prefab.meta
+*.mat.meta
+*.anim.meta
+*.controller.meta
+*.mask.meta
+*.mixer.meta
+*.physicMaterial.meta
+*.renderTexture.meta
+*.shader.meta
+*.spriteatlas.meta
+*.guiskin.meta
+*.fontsettings.meta
+*.cubemap.meta
+*.flare.meta
+*.compute.meta
+*.overrideController.meta
+*.playable.meta
+*.renderPipeline.meta
+*.renderPipelineAsset.meta
+*.asmdef.meta
+*.inputactions.meta
+*.giparams.meta
+*.lighting.meta
+
+# Package Manager
+/Packages/manifest.json.meta
+/Packages/packages-lock.json
+
+# TextMeshPro
+/Assets/TextMesh Pro/
+
+# Other
+ExportedObj/
+.fmod/
+.gitattributes
+.gitkeep
