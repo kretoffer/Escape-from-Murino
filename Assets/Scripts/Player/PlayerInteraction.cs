@@ -6,10 +6,12 @@ namespace Player
     {
         [SerializeField] private float _interactionDistance = 5f;
         private Transform _cameraTransform;
+        private HandInventory _handInventory;
 
         private void Start()
         {
             _cameraTransform = GetComponentInChildren<Camera>().transform;
+            _handInventory = GetComponent<HandInventory>();
             if (_cameraTransform == null)
             {
                 Debug.LogError("Camera transform not found on player object or its children. Make sure there is a child object with a Camera component.");
@@ -37,7 +39,10 @@ namespace Player
                 {
                     if (Input.GetKeyDown(KeyCode.F))
                     {
-                        pickedObject.Pick();
+                        if (_handInventory.TryEquip(pickedObject.item))
+                        {
+                            pickedObject.Pick();
+                        }
                     }
                 }
             }
