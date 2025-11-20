@@ -1,8 +1,5 @@
-namespace Player
+public interface IPicked
 {
-    public interface IPicked
-    {
-        void Pick();
-        ItemData item { get; set; }
-    }
+    void Pick();
+    ItemData item { get; set; }
 }

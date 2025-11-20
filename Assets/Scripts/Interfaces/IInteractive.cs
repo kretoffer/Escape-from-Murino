@@ -1,7 +1,4 @@
-namespace Player
+public interface IInteractive
 {
-    public interface IInteractive
-    {
-        void Interact();
-    }
+    void Interact();
 }

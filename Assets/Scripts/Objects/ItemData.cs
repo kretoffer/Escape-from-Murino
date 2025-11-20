@@ -9,6 +9,8 @@ public class ItemData : ScriptableObject
     public Sprite inventoryTexture;
     public Mesh mesh;
     [Header("Settings")]
+    public int height = 1;
+    public int width = 1;
     public bool isTwoHanded = false;
     public float weight;
 }
