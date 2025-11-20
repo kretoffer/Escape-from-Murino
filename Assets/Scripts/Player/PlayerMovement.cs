@@ -23,9 +23,9 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         float currentSpeed = _walkSpeed;
-        if (Input.GetButton("Fire3"))
+        if (Input.GetButton("Run"))
             currentSpeed = _runSpeed;
-        else if (Input.GetButton("Fire1"))
+        else if (Input.GetButton("Steal"))
             currentSpeed = _stealSpeed;
 
         float horizontal = Input.GetAxis("Horizontal");
@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 finalVelocity = new Vector3(horizontalVelocity.x, _velocity.y, horizontalVelocity.z);
         _characterController.Move(finalVelocity * Time.deltaTime);
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Steal"))
             _characterController.height = 1f;
         else
             _characterController.height = 2f;
