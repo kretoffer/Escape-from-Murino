@@ -551,7 +551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryItemPrefab: {fileID: 7428394736286066898, guid: 692cf5208399eccd8b17577451f2bb11, type: 3}
   gridContainer: {fileID: 2080349348}
-  cellSize: 150
+  cellSize: 200
 --- !u!114 &189497810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,7 +624,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -186.00006, y: 350}
+  m_AnchoredPosition: {x: -186.00003, y: 235.8633}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &223505593
@@ -1002,7 +1002,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 186.00003, y: 350}
+  m_AnchoredPosition: {x: 186.00009, y: 260.86328}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1065968685
@@ -1329,6 +1329,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _leftInHandObject: {fileID: 1645742989}
   _rightInHandObject: {fileID: 1779221959}
+  _leftHandInventory: {fileID: 223505593}
+  _rightHandInventory: {fileID: 1065968685}
   _leftPocket: {fileID: 865468076}
   _rightPocket: {fileID: 679791901}
   defaultSprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
@@ -2086,6 +2088,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2080349348}
+  - component: {fileID: 2080349351}
   m_Layer: 5
   m_Name: Grid
   m_TagString: Untagged
@@ -2112,6 +2115,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1248, y: 702}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2080349351
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080349347}
+  m_CullTransparentMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

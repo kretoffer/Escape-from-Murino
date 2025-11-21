@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
         return IsPlacementPossible(item.x, item.y, item.GetWidth(), item.GetHeight(), item);
     }
 
-    private bool IsPlacementPossible(int startX, int startY, int itemWidth, int itemHeight, InventoryItem item)
+    public bool IsPlacementPossible(int startX, int startY, int itemWidth, int itemHeight, InventoryItem item)
     {
         if (startX < 0 || startY < 0 || startX + itemWidth > width || startY + itemHeight > height)
         {

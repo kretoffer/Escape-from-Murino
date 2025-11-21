@@ -17,9 +17,11 @@ public class HandInventory : MonoBehaviour
     private bool isLeftHandActive = true;
     private bool isRightHandActive = true;
 
-    [Header("Item in hands")]
+    [Header("Hands")]
     [SerializeField] private GameObject _leftInHandObject;
     [SerializeField] private GameObject _rightInHandObject;
+    [SerializeField] private Image _leftHandInventory;
+    [SerializeField] private Image _rightHandInventory;
 
     [Header("Pockets")]
     [SerializeField] private Image _leftPocket;
@@ -38,6 +40,8 @@ public class HandInventory : MonoBehaviour
     {
         _leftPocket.sprite = defaultSprite;
         _rightPocket.sprite = defaultSprite;
+        _leftHandInventory.sprite = defaultSprite;
+        _rightHandInventory.sprite = defaultSprite;
     }
 
     void Update()
@@ -66,7 +70,9 @@ public class HandInventory : MonoBehaviour
             }
         }
         GameObject targetObject = (hand == Hand.Left) ? _leftInHandObject : _rightInHandObject;
+        Image targetHand = (hand == Hand.Left) ? _leftHandInventory : _rightHandInventory;
         targetObject.GetComponent<MeshFilter>().mesh = item.mesh;
+        targetHand.sprite = item.icon;
     }
 
     private void OnItemUnequipped(Hand hand, ItemData item)
@@ -77,7 +83,9 @@ public class HandInventory : MonoBehaviour
             isRightHandActive = true;
         }
         GameObject targetObject = (hand == Hand.Left) ? _leftInHandObject : _rightInHandObject;
+        Image targetHand = (hand == Hand.Left) ? _leftHandInventory : _rightHandInventory;
         targetObject.GetComponent<MeshFilter>().mesh = null;
+        targetHand.sprite = defaultSprite;
     }
 
     public bool TryEquip(ItemData item)

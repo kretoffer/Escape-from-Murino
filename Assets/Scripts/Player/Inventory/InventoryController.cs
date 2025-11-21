@@ -87,12 +87,13 @@ public class InventoryController : MonoBehaviour
 
         rectTransform.anchoredPosition = new Vector2(item.x * cellSize, -item.y * cellSize);
         rectTransform.sizeDelta = new Vector2(item.GetWidth() * cellSize, item.GetHeight() * cellSize);
+        draggable.indicator.GetComponent<RectTransform>().sizeDelta = new Vector2(item.GetWidth() * cellSize, item.GetHeight() * cellSize);
 
         // Set the item's icon
         Image itemIcon = itemGO.GetComponentInChildren<Image>();
-        if (itemIcon != null && item.itemData.icon != null)
+        if (itemIcon != null && item.itemData.inventoryTexture != null)
         {
-            itemIcon.sprite = item.itemData.icon;
+            itemIcon.sprite = item.itemData.inventoryTexture;
         }
     }
     private void RemoveItemUI(InventoryItem item)
