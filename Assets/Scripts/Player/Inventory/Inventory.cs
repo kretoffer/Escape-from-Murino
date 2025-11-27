@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
     public event Action<InventoryItem> OnItemAdded;
     public event Action<InventoryItem> OnItemRemoved;
+
+    private HandInventory _handInventory;
 
     [Header("Grid Settings")]
     [SerializeField] private int width = 6;
@@ -18,11 +21,21 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject inventoryUI;
     private CameraController _cameraController;
 
+    private RectTransform _leftHandInventory;
+    private RectTransform _rightHandInventory;
+    private RectTransform _leftPocket;
+    private RectTransform _rightPocket;
+
     void Awake()
     {
         grid = new InventoryItem[width, height];
         items = new List<InventoryItem>();
         _cameraController = GetComponent<CameraController>();
+        _handInventory = GetComponent<HandInventory>();
+        _leftHandInventory = _handInventory._leftHandInventory.GetComponent<RectTransform>();
+        _rightHandInventory = _handInventory._rightHandInventory.GetComponent<RectTransform>();
+        _leftPocket = _handInventory._leftPocket.GetComponent<RectTransform>();
+        _rightPocket = _handInventory._rightPocket.GetComponent<RectTransform>();
     }
 
     void Update()
@@ -141,6 +154,39 @@ public class Inventory : MonoBehaviour
             PlaceItemOnGrid(item);
             return false;
         }
+    }
+
+    public bool IsPlacementToSlot(RectTransform item)
+    {
+        if (UIHelper.IsPartialOverlap(item, _leftHandInventory) && _handInventory.leftHandSlot.IsEmpty())
+            return true;
+        if (UIHelper.IsPartialOverlap(item, _rightHandInventory) && _handInventory.rightHandSlot.IsEmpty())
+            return true;
+        if (UIHelper.IsPartialOverlap(item, _leftPocket) && _handInventory.leftPocketSlot.IsEmpty())
+            return true;
+        if (UIHelper.IsPartialOverlap(item, _rightPocket) && _handInventory.rightPocketSlot.IsEmpty())
+            return true;
+        return false;
+    }
+
+    public bool EquipFromInventoryToHand(InventoryItem item, RectTransform rectTransformItem)
+    {
+        bool equipped = false;
+        if (UIHelper.IsPartialOverlap(rectTransformItem, _leftHandInventory) && _handInventory.leftHandSlot.IsEmpty())
+            equipped = _handInventory.TryEquipToHand(item.itemData, Hand.Left);
+        else if (UIHelper.IsPartialOverlap(rectTransformItem, _rightHandInventory) && _handInventory.rightHandSlot.IsEmpty())
+            equipped = _handInventory.TryEquipToHand(item.itemData, Hand.Right);
+        else if (UIHelper.IsPartialOverlap(rectTransformItem, _leftPocket) && _handInventory.leftPocketSlot.IsEmpty())
+            equipped = _handInventory.TryEquipToPocket(item.itemData, Hand.Left);
+        else if (UIHelper.IsPartialOverlap(rectTransformItem, _rightPocket) && _handInventory.rightPocketSlot.IsEmpty())
+            equipped = _handInventory.TryEquipToPocket(item.itemData, Hand.Right);
+
+        if (equipped)
+        {
+            RemoveItem(item);
+        }
+        
+        return equipped;
     }
 
     // FOR TEST

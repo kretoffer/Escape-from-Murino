@@ -178,3 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicator: {fileID: 3656262352819545854}
+  defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  canColor: {r: 0, g: 1, b: 0, a: 0.5}
+  cantColor: {r: 1, g: 0, b: 0, a: 0.5}
+  hitbox: {fileID: 0}

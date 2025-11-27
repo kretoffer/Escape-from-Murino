@@ -62,6 +62,11 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         rectTransform.position = eventData.position;
 
         // Check Possible
+        if (inventory.IsPlacementToSlot(rectTransform))
+        {
+            indicator.color = canColor;
+            return;
+        }
         var pos = GetXY(eventData);
         indicator.color = inventory.IsPlacementPossible(
             pos.x, 
@@ -104,7 +109,25 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnEndDrag(PointerEventData eventData)
     {
         if (inventoryItem == null) return;
+        // Restore visual state
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.alpha = 1f;
 
+        indicator.color = defaultColor;
+
+        isDraged = false;
+
+        if (inventory.IsPlacementToSlot(rectTransform))
+        {
+            if (inventory.EquipFromInventoryToHand(inventoryItem, rectTransform))
+            {
+                // Item was successfully equipped. The InventoryController will handle destroying the UI object
+                // via the OnItemRemoved event. We don't need to do anything else here.
+                return;
+            }
+        }
+
+        // If not placed in a slot, or if equipping failed, move it within the inventory.
         var pos = GetXY(eventData);
 
         // Move item in data model
@@ -113,13 +136,5 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Snap back to grid UI
         rectTransform.SetParent(originalParent);
         rectTransform.anchoredPosition = new Vector2(inventoryItem.x * inventoryController.CellSize, -inventoryItem.y * inventoryController.CellSize);
-        
-        // Restore visual state
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.alpha = 1f;
-
-        indicator.color = defaultColor;
-
-        isDraged = false;
     }
 }

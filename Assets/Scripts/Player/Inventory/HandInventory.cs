@@ -9,10 +9,10 @@ public enum Hand
 
 public class HandInventory : MonoBehaviour
 {
-    private HandSlot leftHandSlot;
-    private HandSlot rightHandSlot;
-    private HandSlot leftPocketSlot;
-    private HandSlot rightPocketSlot;
+    public HandSlot leftHandSlot;
+    public HandSlot rightHandSlot;
+    public HandSlot leftPocketSlot;
+    public HandSlot rightPocketSlot;
 
     private bool isLeftHandActive = true;
     private bool isRightHandActive = true;
@@ -20,12 +20,12 @@ public class HandInventory : MonoBehaviour
     [Header("Hands")]
     [SerializeField] private GameObject _leftInHandObject;
     [SerializeField] private GameObject _rightInHandObject;
-    [SerializeField] private Image _leftHandInventory;
-    [SerializeField] private Image _rightHandInventory;
+    [SerializeField] public Image _leftHandInventory;
+    [SerializeField] public Image _rightHandInventory;
 
     [Header("Pockets")]
-    [SerializeField] private Image _leftPocket;
-    [SerializeField] private Image _rightPocket;
+    [SerializeField] public Image _leftPocket;
+    [SerializeField] public Image _rightPocket;
     [SerializeField] private Sprite defaultSprite;
 
     void Awake()
@@ -131,6 +131,22 @@ public class HandInventory : MonoBehaviour
     {
         slot.Equip(item);
         OnItemEquipped(hand, item);
+    }
+
+    public bool TryEquipToPocket(ItemData item, Hand hand)
+    {
+        HandSlot targetSlot = (hand == Hand.Left) ? leftPocketSlot : rightPocketSlot;
+        if (!targetSlot.IsEmpty())
+            return false;
+        
+        EquipToPocket(targetSlot, item, hand);
+        return true;
+    }
+
+    private void EquipToPocket(HandSlot slot, ItemData item, Hand hand)
+    {
+        slot.Equip(item);
+        OnItemPutToPocket(hand, item);
     }
 
     public void SwapSlots(Hand hand)
