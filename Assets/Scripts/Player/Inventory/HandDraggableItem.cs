@@ -3,30 +3,38 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class HandDraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class HandDraggableItem : AbstractDraggableItem
 {
     public Hand hand;
     public bool isPocket;
 
     private HandInventory handInventory;
-    private Inventory inventory;
-    private InventoryController inventoryController;
 
     private ItemData currentItemData;
     private HandSlot currentSlot;
     private Image slotImage;
 
     private GameObject draggedItemGO;
-    private RectTransform gridContainer;
+    private RectTransform draggedItemRectTransform;
     private CanvasGroup draggedItemCanvasGroup;
 
-    private Image indicator;
-    private Color defaultColor = new Color(0, 0, 0, 0);
-    private Color canColor = new Color(0, 1, 0, 0.5f);
-    private Color cantColor = new Color(1, 0, 0, 0.5f);
-    private RectTransform indicatorRectTransform;
+    private Image indicatorOnDraggedItem;
+    private RectTransform indicatorRectTransformOnDraggedItem;
     private bool isRotated = false;
     private bool isInitialized = false;
+
+    // --- Abstract property implementations ---
+    protected override Image Indicator => indicatorOnDraggedItem;
+    protected override RectTransform DraggableRectTransform => draggedItemRectTransform;
+    protected override RectTransform IndicatorRectTransform => indicatorRectTransformOnDraggedItem;
+    protected override RectTransform GridContainer => inventoryController.GridContainer;
+    protected override int ItemWidth => isRotated ? currentItemData.height : currentItemData.width;
+    protected override int ItemHeight => isRotated ? currentItemData.width : currentItemData.height;
+    protected override InventoryItem ItemToIgnore => null;
+    protected override void Rotate()
+    {
+        isRotated = !isRotated;
+    }
 
     void Start()
     {
@@ -72,15 +80,13 @@ public class HandDraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler,
             return false;
         }
 
-        gridContainer = inventoryController.GridContainer;
-        
         string slotType = isPocket ? "Pocket" : "Hand";
         Debug.Log($"HandDraggableItem initialized for {hand} {slotType}.");
         isInitialized = true;
         return true;
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public override void OnBeginDrag(PointerEventData eventData)
     {
         if (!isInitialized)
         {
@@ -105,12 +111,13 @@ public class HandDraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler,
         }
 
         draggedItemGO = Instantiate(inventoryController.InventoryItemPrefab, inventoryController.transform.root);
+        draggedItemRectTransform = draggedItemGO.GetComponent<RectTransform>();
         
         DraggableItem originalDraggable = draggedItemGO.GetComponent<DraggableItem>();
         if(originalDraggable != null)
         {
             originalDraggable.enabled = false;
-            indicator = originalDraggable.indicator;
+            indicatorOnDraggedItem = originalDraggable.indicator;
         }
 
         Image draggedImage = draggedItemGO.GetComponent<Image>();
@@ -123,59 +130,25 @@ public class HandDraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler,
         draggedItemCanvasGroup.blocksRaycasts = false;
         draggedItemCanvasGroup.alpha = 0.7f;
 
-        RectTransform rectTransform = draggedItemGO.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(currentItemData.width * inventoryController.CellSize, currentItemData.height * inventoryController.CellSize);
+        draggedItemRectTransform.sizeDelta = new Vector2(currentItemData.width * inventoryController.CellSize, currentItemData.height * inventoryController.CellSize);
 
-        if (indicator != null)
+        if (indicatorOnDraggedItem != null)
         {
-            indicatorRectTransform = indicator.GetComponent<RectTransform>();
-            indicatorRectTransform.sizeDelta = rectTransform.sizeDelta;
-            indicator.color = defaultColor;
+            indicatorRectTransformOnDraggedItem = indicatorOnDraggedItem.GetComponent<RectTransform>();
+            indicatorRectTransformOnDraggedItem.sizeDelta = draggedItemRectTransform.sizeDelta;
+            indicatorOnDraggedItem.color = defaultColor;
         }
 
         slotImage.enabled = false;
         isRotated = false;
+        isDragged = true;
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (draggedItemGO == null) return;
-
-        draggedItemGO.transform.position = eventData.position;
-
-        if (indicator == null) return;
-
-        if (inventory.IsPlacementToSlot(indicatorRectTransform))
-        {
-            indicator.color = canColor;
-            return;
-        }
-
-        var pos = GetXY(eventData);
-        int w = isRotated ? currentItemData.height : currentItemData.width;
-        int h = isRotated ? currentItemData.width : currentItemData.height;
-
-        indicator.color = inventory.IsPlacementPossible(pos.x, pos.y, w, h, null) ? canColor : cantColor;
-    }
-
-    void Update()
-    {
-        if (draggedItemGO != null && Input.GetKeyDown(KeyCode.R))
-        {
-            isRotated = !isRotated;
-            int w = isRotated ? currentItemData.height : currentItemData.width;
-            int h = isRotated ? currentItemData.width : currentItemData.height;
-            draggedItemGO.GetComponent<RectTransform>().sizeDelta = new Vector2(w * inventoryController.CellSize, h * inventoryController.CellSize);
-            if(indicatorRectTransform != null)
-            {
-                indicatorRectTransform.sizeDelta = new Vector2(w * inventoryController.CellSize, h * inventoryController.CellSize);
-            }
-        }
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
+    public override void OnEndDrag(PointerEventData eventData)
     {
         if (draggedItemGO == null) { slotImage.enabled = true; return; }
+
+        isDragged = false;
 
         RectTransform draggedRT = draggedItemGO.GetComponent<RectTransform>();
         bool placedInSlot = false;
@@ -219,23 +192,5 @@ public class HandDraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler,
         slotImage.enabled = true;
         Destroy(draggedItemGO);
         draggedItemGO = null;
-    }
-
-    private (int x, int y) GetXY(PointerEventData eventData)
-    {
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            gridContainer,
-            eventData.position,
-            eventData.pressEventCamera,
-            out localPoint);
-
-        RectTransform parentRect = gridContainer;
-        float deltaX = parentRect.rect.width / 2;
-        float deltaY = parentRect.rect.height / 2;
-        int newX = Mathf.FloorToInt((localPoint.x + deltaX) / inventoryController.CellSize);
-        int newY = Mathf.FloorToInt((-localPoint.y + deltaY) / inventoryController.CellSize);
-
-        return (newX, newY);
     }
 }

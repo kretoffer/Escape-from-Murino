@@ -4,25 +4,30 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasGroup))]
 [RequireComponent(typeof(Image))]
-public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DraggableItem : AbstractDraggableItem
 {
     public InventoryItem inventoryItem { get; private set; }
-
-    private Inventory inventory;
-    private InventoryController inventoryController;
 
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     private Transform originalParent;
 
-    private bool isDraged = false;
-
     [Header("Indicator")]
     [SerializeField] public Image indicator;
-    [SerializeField] private Color defaultColor = new Color(0, 0, 0, 0);
-    [SerializeField] private Color canColor = new Color(0, 1, 0, 0.5f);
-    [SerializeField] private Color cantColor = new Color(1, 0, 0, 0.5f);
     private RectTransform indicatorRectTransform;
+
+    // --- Abstract property implementations ---
+    protected override Image Indicator => indicator;
+    protected override RectTransform DraggableRectTransform => rectTransform;
+    protected override RectTransform IndicatorRectTransform => indicatorRectTransform;
+    protected override RectTransform GridContainer => (RectTransform)originalParent;
+    protected override int ItemWidth => inventoryItem.GetWidth();
+    protected override int ItemHeight => inventoryItem.GetHeight();
+    protected override InventoryItem ItemToIgnore => inventoryItem;
+    protected override void Rotate()
+    {
+        inventoryItem.isRotated = !inventoryItem.isRotated;
+    }
 
     public void Setup(Inventory inv, InventoryController controller, InventoryItem item)
     {
@@ -40,7 +45,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         indicatorRectTransform = indicator.GetComponent<RectTransform>();
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public override void OnBeginDrag(PointerEventData eventData)
     {
         if (inventoryItem == null) return;
 
@@ -51,62 +56,10 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.7f;
 
-        isDraged = true;
+        isDragged = true;
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (inventoryItem == null) return;
-
-        // Follow mouse
-        rectTransform.position = eventData.position;
-
-        // Check Possible
-        if (inventory.IsPlacementToSlot(rectTransform))
-        {
-            indicator.color = canColor;
-            return;
-        }
-        var pos = GetXY(eventData);
-        indicator.color = inventory.IsPlacementPossible(
-            pos.x, 
-            pos.y, 
-            inventoryItem.itemData.width, 
-            inventoryItem.itemData.height, 
-            inventoryItem) 
-        ? canColor : cantColor;
-    }
-
-    private void Update()
-    {
-        // Rotate item on 'R' key press
-        if (isDraged && Input.GetKeyDown(KeyCode.R))
-        {
-            inventoryItem.isRotated = !inventoryItem.isRotated;
-            rectTransform.sizeDelta = new Vector2(inventoryItem.GetWidth() * inventoryController.CellSize, inventoryItem.GetHeight() * inventoryController.CellSize);
-            indicatorRectTransform.sizeDelta = new Vector2(inventoryItem.GetWidth() * inventoryController.CellSize, inventoryItem.GetHeight() * inventoryController.CellSize);
-        }
-    }
-
-    private (int x, int y) GetXY(PointerEventData eventData)
-    {
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            (RectTransform)originalParent,
-            eventData.position,
-            eventData.pressEventCamera,
-            out localPoint);
-
-        RectTransform parentRect = (RectTransform)originalParent;
-        int deltaX = Mathf.FloorToInt(parentRect.rect.width/2);
-        int deltaY = Mathf.FloorToInt(parentRect.rect.height/2);
-        int newX = Mathf.FloorToInt((localPoint.x + deltaX) / inventoryController.CellSize);
-        int newY = Mathf.FloorToInt((-localPoint.y + deltaY) / inventoryController.CellSize);
-
-        return (newX, newY);
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
+    public override void OnEndDrag(PointerEventData eventData)
     {
         if (inventoryItem == null) return;
         // Restore visual state
@@ -115,7 +68,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         indicator.color = defaultColor;
 
-        isDraged = false;
+        isDragged = false;
 
         if (inventory.IsPlacementToSlot(rectTransform))
         {
