@@ -188,7 +188,7 @@ public class HandInventory : MonoBehaviour
         {
             handSlot.Equip(unequippedPocketItem);
             if (unequippedHandItem == null)
-                OnItemGetFromPocket(hand, unequippedPocketItem);
+                OnItemGetFromPocket(hand);
             OnItemEquipped(hand, unequippedPocketItem);
         }
     }
@@ -219,13 +219,25 @@ public class HandInventory : MonoBehaviour
         return null;
     }
 
+    public ItemData UnequipFromPocket(Hand hand)
+    {
+        HandSlot pocketSlot = (hand == Hand.Left) ? leftPocketSlot : rightPocketSlot;
+        if (!pocketSlot.IsEmpty())
+        {
+            ItemData item = pocketSlot.Unequip();
+            OnItemGetFromPocket(hand);
+            return item;
+        }
+        return null;
+    }
+
     private void OnItemPutToPocket(Hand pocket, ItemData item)
     {
         Image pocketImage = (pocket == Hand.Left) ? _leftPocket : _rightPocket;
         pocketImage.sprite = item.icon;
     }
 
-    private void OnItemGetFromPocket(Hand pocket, ItemData item)
+    private void OnItemGetFromPocket(Hand pocket)
     {
         Image pocketImage = (pocket == Hand.Left) ? _leftPocket : _rightPocket;
         pocketImage.sprite = defaultSprite;

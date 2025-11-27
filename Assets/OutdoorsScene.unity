@@ -507,7 +507,6 @@ GameObject:
   - component: {fileID: 189497808}
   - component: {fileID: 189497811}
   - component: {fileID: 189497810}
-  - component: {fileID: 189497809}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -537,21 +536,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1248, y: 702}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &189497809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189497807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 047da9098243f383db51d17508ccdae0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryItemPrefab: {fileID: 7428394736286066898, guid: 692cf5208399eccd8b17577451f2bb11, type: 3}
-  gridContainer: {fileID: 2080349348}
-  cellSize: 200
 --- !u!114 &189497810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,6 +585,7 @@ GameObject:
   - component: {fileID: 223505592}
   - component: {fileID: 223505594}
   - component: {fileID: 223505593}
+  - component: {fileID: 223505595}
   m_Layer: 5
   m_Name: hand_l
   m_TagString: Untagged
@@ -665,6 +650,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223505591}
   m_CullTransparentMesh: 1
+--- !u!114 &223505595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223505591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f932ae66767ee66f831957d76591d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hand: 0
+  isPocket: 0
 --- !u!1 &432432459
 GameObject:
   m_ObjectHideFlags: 0
@@ -725,6 +724,7 @@ GameObject:
   - component: {fileID: 679791900}
   - component: {fileID: 679791902}
   - component: {fileID: 679791901}
+  - component: {fileID: 679791903}
   m_Layer: 5
   m_Name: pocket_r
   m_TagString: Untagged
@@ -789,6 +789,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679791899}
   m_CullTransparentMesh: 1
+--- !u!114 &679791903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679791899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f932ae66767ee66f831957d76591d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hand: 1
+  isPocket: 1
 --- !u!1 &756208188
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,6 +815,7 @@ GameObject:
   - component: {fileID: 756208191}
   - component: {fileID: 756208190}
   - component: {fileID: 756208189}
+  - component: {fileID: 756208193}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -893,6 +908,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &756208193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756208188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 047da9098243f383db51d17508ccdae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryItemPrefab: {fileID: 7428394736286066898, guid: 692cf5208399eccd8b17577451f2bb11, type: 3}
+  gridContainer: {fileID: 2080349348}
+  cellSize: 200
 --- !u!1 &865468074
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,6 +934,7 @@ GameObject:
   - component: {fileID: 865468075}
   - component: {fileID: 865468077}
   - component: {fileID: 865468076}
+  - component: {fileID: 865468078}
   m_Layer: 5
   m_Name: pocket_l
   m_TagString: Untagged
@@ -968,6 +999,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865468074}
   m_CullTransparentMesh: 1
+--- !u!114 &865468078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865468074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f932ae66767ee66f831957d76591d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hand: 0
+  isPocket: 1
 --- !u!1 &1065968683
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,6 +1024,7 @@ GameObject:
   - component: {fileID: 1065968684}
   - component: {fileID: 1065968686}
   - component: {fileID: 1065968685}
+  - component: {fileID: 1065968687}
   m_Layer: 5
   m_Name: 'hand_r '
   m_TagString: Untagged
@@ -1043,6 +1089,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1065968683}
   m_CullTransparentMesh: 1
+--- !u!114 &1065968687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065968683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f932ae66767ee66f831957d76591d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hand: 1
+  isPocket: 0
 --- !u!1 &1067120500
 GameObject:
   m_ObjectHideFlags: 0

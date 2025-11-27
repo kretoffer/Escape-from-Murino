@@ -8,9 +8,11 @@ public class InventoryController : MonoBehaviour
 
     [Tooltip("The prefab for the visual item in the inventory.")]
     [SerializeField] private GameObject inventoryItemPrefab;
+    public GameObject InventoryItemPrefab => inventoryItemPrefab;
 
     [Tooltip("The parent transform for the grid items.")]
     [SerializeField] private RectTransform gridContainer;
+    public RectTransform GridContainer => gridContainer;
 
     [Tooltip("The size of a single grid cell in pixels.")]
     [SerializeField] private float cellSize = 100f;
