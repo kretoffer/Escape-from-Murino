@@ -13,7 +13,7 @@ public class PickableItem : MonoBehaviour, IPicked
     {
         if (item == null)
         {
-            Debug.LogError("item can;t be null");
+            Debug.LogError("item can't be null");
             Destroy(gameObject);
         }
     }
