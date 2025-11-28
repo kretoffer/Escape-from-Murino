@@ -23,26 +23,32 @@ public class InventoryController : MonoBehaviour
 
     private void Awake()
     {
+        // We find the inventory in Awake.
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             inventory = player.GetComponent<Inventory>();
-            if (inventory == null)
-            {
-                Debug.LogError("Inventory component not found on the Player object.");
-            }
-        }
-        else
-        {
-            Debug.LogError("Player object not found. Make sure your player has the 'Player' tag.");
         }
     }
 
     private void OnEnable()
     {
+        // We check for the inventory in OnEnable, and if it's not there, we try to find it again.
+        // This makes it more robust if the player object is instantiated after this object's Awake.
         if (inventory == null)
         {
-            // Error is logged in Awake, but we still need to stop execution here.
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                inventory = player.GetComponent<Inventory>();
+            }
+        }
+
+        // If it's still null, log an error and disable this component to prevent further issues.
+        if (inventory == null)
+        {
+            Debug.LogError("Inventory component could not be found on a 'Player' tagged object. Disabling InventoryController.");
+            this.enabled = false; // Using this.enabled is slightly better than gameObject.SetActive(false)
             return;
         }
 
@@ -108,6 +114,12 @@ public class InventoryController : MonoBehaviour
     }
     private void RefreshAllItems()
     {
+        // Explicitly check again right before use
+        if (inventory == null)
+        {
+            Debug.LogError("Inventory is unexpectedly null in RefreshAllItems despite previous checks.");
+            return; // Prevent NRE
+        }
         ClearAllItemsUI();
         foreach (var item in inventory.GetItems())
         {

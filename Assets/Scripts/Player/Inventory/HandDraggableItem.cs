@@ -80,10 +80,18 @@ public class HandDraggableItem : AbstractDraggableItem
             return false;
         }
 
-        string slotType = isPocket ? "Pocket" : "Hand";
-        Debug.Log($"HandDraggableItem initialized for {hand} {slotType}.");
         isInitialized = true;
         return true;
+    }
+
+    public override void DropItem()
+    {
+        inventory.DropItemFromHand(hand, isPocket);
+        slotImage.enabled = true;
+        Destroy(draggedItemGO);
+        isDragged = false;
+        draggedItemGO = null;
+        draggedItemRectTransform = null;
     }
 
     public override void OnBeginDrag(PointerEventData eventData)
@@ -98,9 +106,6 @@ public class HandDraggableItem : AbstractDraggableItem
         }
         
         currentItemData = currentSlot.currentItem;
-        
-        string slotType = isPocket ? "Pocket" : "Hand";
-        Debug.Log($"OnBeginDrag called for {hand} {slotType}. Item: {(currentItemData != null ? currentItemData.itemName : "null")}");
 
         if (currentItemData == null) return;
 

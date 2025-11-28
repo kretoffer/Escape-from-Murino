@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private int height = 3;
 
     private InventoryItem[,] grid;
-    private List<InventoryItem> items;
+    private List<InventoryItem> items = new List<InventoryItem>();
 
     [Header("UI")]
     [SerializeField] private GameObject inventoryUI;
@@ -26,12 +26,19 @@ public class Inventory : MonoBehaviour
     private RectTransform _leftPocket;
     private RectTransform _rightPocket;
 
+    [Header("Drop Settings")]
+    private Transform playerCameraTransform;
+    [SerializeField] private float dropForce = 5f;
+    [SerializeField] private float dropOffset = 1.5f;
+
     void Awake()
     {
         grid = new InventoryItem[width, height];
-        items = new List<InventoryItem>();
+        // items = new List<InventoryItem>(); // Moved to declaration
         _cameraController = GetComponent<CameraController>();
         _handInventory = GetComponent<HandInventory>();
+        playerCameraTransform = GetComponentInChildren<Camera>().transform;
+
         _leftHandInventory = _handInventory._leftHandInventory.GetComponent<RectTransform>();
         _rightHandInventory = _handInventory._rightHandInventory.GetComponent<RectTransform>();
         _leftPocket = _handInventory._leftPocket.GetComponent<RectTransform>();
@@ -48,10 +55,36 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public void DropItemFromHand(Hand hand, bool isPocket)
+    {   
+        DropItem(isPocket ? _handInventory.UnequipFromPocket(hand) : _handInventory.UnequipFromHand(hand));
+    }
+
+    public void DropItemFromGrid(InventoryItem item)
+    {
+        if (item == null || item.itemData.prefab == null)
+            return;
+
+        DropItem(item.itemData);
+        RemoveItem(item);
+    }
+
+    private void DropItem(ItemData itemData)
+    {
+        Vector3 spawnPosition = playerCameraTransform.position + playerCameraTransform.forward * dropOffset;
+        GameObject droppedItemObj = Instantiate(itemData.prefab, spawnPosition, Quaternion.identity);
+        
+        if (droppedItemObj.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.AddForce(playerCameraTransform.forward * dropForce, ForceMode.Impulse);
+        }
+    }
+
     public List<InventoryItem> GetItems()
     {
         return items;
     }
+
 
     public bool IsPlacementPossible(InventoryItem item)
     {

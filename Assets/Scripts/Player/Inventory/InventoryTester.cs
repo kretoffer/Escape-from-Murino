@@ -25,15 +25,7 @@ public class InventoryTester : MonoBehaviour
             }
 
             // Use the new TryAddItem method to find a free spot automatically
-            bool added = inventory.TryAddItem(testItem);
-            if (added)
-            {
-                Debug.Log($"Added {testItem.itemName} to inventory.");
-            }
-            else
-            {
-                Debug.LogWarning($"Failed to add {testItem.itemName} to inventory. No free space found.");
-            }
+            inventory.TryAddItem(testItem);
         }
     }
 }

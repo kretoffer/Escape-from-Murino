@@ -45,6 +45,12 @@ public class DraggableItem : AbstractDraggableItem
         indicatorRectTransform = indicator.GetComponent<RectTransform>();
     }
 
+    public override void DropItem()
+    {
+        inventory.DropItemFromGrid(inventoryItem);
+        Destroy(gameObject);
+    }
+
     public override void OnBeginDrag(PointerEventData eventData)
     {
         if (inventoryItem == null) return;

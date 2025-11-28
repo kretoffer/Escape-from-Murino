@@ -32,7 +32,7 @@ public abstract class AbstractDraggableItem : MonoBehaviour, IBeginDragHandler, 
 
     public virtual void OnDrag(PointerEventData eventData)
     {
-        if (!isDragged) return;
+        if (!isDragged || DraggableRectTransform == null) return;
 
         DraggableRectTransform.position = eventData.position;
 
@@ -48,6 +48,9 @@ public abstract class AbstractDraggableItem : MonoBehaviour, IBeginDragHandler, 
         Indicator.color = inventory.IsPlacementPossible(pos.x, pos.y, ItemWidth, ItemHeight, ItemToIgnore) ? canColor : cantColor;
     }
 
+    // Force recompile
+    public abstract void DropItem();
+
     // --- VIRTUAL METHODS ---
     protected virtual void Update()
     {
@@ -59,6 +62,10 @@ public abstract class AbstractDraggableItem : MonoBehaviour, IBeginDragHandler, 
             {
                 IndicatorRectTransform.sizeDelta = DraggableRectTransform.sizeDelta;
             }
+        }
+        if (isDragged && Input.GetKeyDown(KeyCode.Q))
+        {
+            DropItem();
         }
     }
 

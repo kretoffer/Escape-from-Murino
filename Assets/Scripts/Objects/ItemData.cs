@@ -8,6 +8,7 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public Sprite inventoryTexture;
     public Mesh mesh;
+    public GameObject prefab;
     [Header("Settings")]
     public int height = 1;
     public int width = 1;
