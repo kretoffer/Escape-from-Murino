@@ -17,6 +17,8 @@ public class HandInventory : MonoBehaviour
     private bool isLeftHandActive = true;
     private bool isRightHandActive = true;
 
+    private Inventory _inventory;
+
     [Header("Hands")]
     [SerializeField] private GameObject _leftInHandObject;
     [SerializeField] private GameObject _rightInHandObject;
@@ -34,6 +36,12 @@ public class HandInventory : MonoBehaviour
         rightHandSlot = new HandSlot();
         leftPocketSlot = new HandSlot();
         rightPocketSlot = new HandSlot();
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            _inventory = player.GetComponent<Inventory>();
+        }
     }
 
     void Start()
@@ -54,6 +62,10 @@ public class HandInventory : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.I))
             SwapHands();
+        if (Input.GetKeyDown(KeyCode.Q) && !_inventory.isOpen)
+        {
+            _inventory.DropItemFromHand(Input.GetButton("Steal") ? Hand.Left : Hand.Right, false);
+        }
     }
 
     private void OnItemEquipped(Hand hand, ItemData item)

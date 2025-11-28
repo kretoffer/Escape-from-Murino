@@ -10,6 +10,8 @@ public class Inventory : MonoBehaviour
 
     private HandInventory _handInventory;
 
+    public bool isOpen => inventoryUI.activeSelf;
+
     [Header("Grid Settings")]
     [SerializeField] private int width = 6;
     [SerializeField] private int height = 3;
@@ -57,7 +59,10 @@ public class Inventory : MonoBehaviour
 
     public void DropItemFromHand(Hand hand, bool isPocket)
     {   
-        DropItem(isPocket ? _handInventory.UnequipFromPocket(hand) : _handInventory.UnequipFromHand(hand));
+        var item = isPocket ? _handInventory.UnequipFromPocket(hand) : _handInventory.UnequipFromHand(hand);
+        if (item == null)
+            return;
+        DropItem(item);
     }
 
     public void DropItemFromGrid(InventoryItem item)
