@@ -21,7 +21,6 @@ public class Inventory : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject inventoryUI;
-    private CameraController _cameraController;
 
     private RectTransform _leftHandInventory;
     private RectTransform _rightHandInventory;
@@ -37,7 +36,6 @@ public class Inventory : MonoBehaviour
     {
         grid = new InventoryItem[width, height];
         // items = new List<InventoryItem>(); // Moved to declaration
-        _cameraController = GetComponent<CameraController>();
         _handInventory = GetComponent<HandInventory>();
         playerCameraTransform = GetComponentInChildren<Camera>().transform;
 
@@ -45,16 +43,6 @@ public class Inventory : MonoBehaviour
         _rightHandInventory = _handInventory._rightHandInventory.GetComponent<RectTransform>();
         _leftPocket = _handInventory._leftPocket.GetComponent<RectTransform>();
         _rightPocket = _handInventory._rightPocket.GetComponent<RectTransform>();
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            inventoryUI.SetActive(!inventoryUI.activeSelf);
-            if (inventoryUI.activeSelf) _cameraController.Deactivate();
-            else _cameraController.Activate();
-        }
     }
 
     public void DropItemFromHand(Hand hand, bool isPocket)

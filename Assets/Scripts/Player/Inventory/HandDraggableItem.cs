@@ -46,7 +46,7 @@ public class HandDraggableItem : AbstractDraggableItem
         if (isInitialized) return true;
 
         slotImage = GetComponent<Image>();
-        inventoryController = FindObjectOfType<InventoryController>();
+        inventoryController = FindFirstObjectByType<InventoryController>();
         if (inventoryController == null)
         {
             Debug.LogWarning("InventoryController not found in scene. Will try again on drag.");
