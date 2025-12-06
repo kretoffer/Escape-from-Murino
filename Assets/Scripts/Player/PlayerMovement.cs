@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(PlayerStats))]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Speeds")]
@@ -14,19 +15,26 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController _characterController;
     private Vector3 _velocity;
+    private PlayerStats _playerStats;
 
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
+        _playerStats = GetComponent<PlayerStats>();
     }
 
     private void Update()
     {
+        bool isRunning = Input.GetButton("Run");
+        bool isCrouching = Input.GetButton("Steal");
+
         float currentSpeed = _walkSpeed;
-        if (Input.GetButton("Run"))
+        if (isRunning)
             currentSpeed = _runSpeed;
-        else if (Input.GetButton("Steal"))
+        else if (isCrouching)
             currentSpeed = _stealSpeed;
+
+        _playerStats.SetMovementState(isRunning, isCrouching);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -40,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetButton("Jump"))
             {
                 _velocity.y = _jumpForce;
+                _playerStats.OnJump();
             }
         }
         else
@@ -50,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 finalVelocity = new Vector3(horizontalVelocity.x, _velocity.y, horizontalVelocity.z);
         _characterController.Move(finalVelocity * Time.deltaTime);
 
-        if (Input.GetButton("Steal"))
+        if (isCrouching)
             _characterController.height = 1f;
         else
             _characterController.height = 2f;
