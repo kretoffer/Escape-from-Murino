@@ -1114,6 +1114,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <memory>k__BackingField: {fileID: 11400000, guid: 47e00bc2e88cd6c2c815db3522b72cc5, type: 2}
+--- !u!114 &615643674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615643660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9fe5298f9acf3c6a9355649a22790b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 10
 --- !u!1 &671103674
 GameObject:
   m_ObjectHideFlags: 0
@@ -2374,15 +2387,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84464e8f2a7cc10cfaa6fb072ea4d5dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tester: 0
   maxHunger: 100
-  currentHunger: 0
   maxSanity: 100
-  currentSanity: 0
   maxFatigue: 100
+  currentHunger: 0
+  currentSanity: 0
   currentFatigue: 0
   hungerDecayRate: 0.5
   sanityDecayRate: 0.1
   fatigueDecayRate: 0.2
+  runHungerMultiplier: 2
+  runFatigueMultiplier: 3
+  crouchHungerMultiplier: 0.5
+  jumpHungerCost: 1
+  jumpFatigueCost: 2
 --- !u!1 &1409342251
 GameObject:
   m_ObjectHideFlags: 0
@@ -3770,6 +3789,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8087331982811684693, guid: 30425e056f58f112981a5ac0429bc3f7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 615643667}
+    - targetCorrespondingSourceObject: {fileID: 8087331982811684693, guid: 30425e056f58f112981a5ac0429bc3f7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 615643674}
   m_SourcePrefab: {fileID: 100100000, guid: 30425e056f58f112981a5ac0429bc3f7, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
