@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _velocity;
     private PlayerStats _playerStats;
 
+    public static bool ControlsInverted = false;
+
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
@@ -38,6 +40,13 @@ public class PlayerMovement : MonoBehaviour
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
+        if (ControlsInverted)
+        {
+            horizontal *= -1;
+            vertical *= -1;
+        }
+
         Vector3 move = transform.right * horizontal + transform.forward * vertical;
 
         Vector3 horizontalVelocity = move * currentSpeed;
