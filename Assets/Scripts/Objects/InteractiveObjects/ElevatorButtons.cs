@@ -2,10 +2,23 @@ using UnityEngine;
 
 public class ElevatorButtons : InteractiveObject
 {
-    [SerializeField] private byte bias = 1;
+    public enum Direction { Up, Down }
+    [SerializeField] private Direction direction = Direction.Up;
+
     override public void Interact()
     {
-        FloorController.Instance.floor += bias;
-        FloorController.Instance.Reboot();
+        if (direction == Direction.Up)
+        {
+            FloorController.Instance.GoUp();
+        }
+        else
+        {
+            FloorController.Instance.GoDown();
+        }
+    }
+
+    void Start()
+    {
+        name = direction == Direction.Up ? "Вверх" : "Вниз"; 
     }
 }
