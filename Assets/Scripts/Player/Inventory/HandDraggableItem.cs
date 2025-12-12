@@ -115,7 +115,7 @@ public class HandDraggableItem : AbstractDraggableItem
             return;
         }
 
-        draggedItemGO = Instantiate(inventoryController.InventoryItemPrefab, inventoryController.transform.root);
+        draggedItemGO = Instantiate(inventoryController.InventoryItemPrefab, inventoryController.DragAndDropContainer);
         draggedItemRectTransform = draggedItemGO.GetComponent<RectTransform>();
         
         DraggableItem originalDraggable = draggedItemGO.GetComponent<DraggableItem>();

@@ -58,7 +58,7 @@ public class DraggableItem : AbstractDraggableItem
         originalParent = rectTransform.parent;
         
         // Visually lift the item
-        rectTransform.SetParent(inventoryController.transform.root);
+        rectTransform.SetParent(inventoryController.DragAndDropContainer);
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.7f;
 

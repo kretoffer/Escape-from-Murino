@@ -14,6 +14,10 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private RectTransform gridContainer;
     public RectTransform GridContainer => gridContainer;
 
+    [Tooltip("The parent transform for dragged items to ensure they stay on the canvas.")]
+    [SerializeField] private Transform dragAndDropContainer;
+    public Transform DragAndDropContainer => dragAndDropContainer;
+
     [Tooltip("The size of a single grid cell in pixels.")]
     [SerializeField] private float cellSize = 100f;
     public float CellSize => cellSize;

@@ -199,6 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryItemPrefab: {fileID: 7428394736286066898, guid: 692cf5208399eccd8b17577451f2bb11, type: 3}
   gridContainer: {fileID: 5236624301971221081}
+  dragAndDropContainer: {fileID: 6073463154162208019}
   cellSize: 200
 --- !u!114 &329161739196013485
 MonoBehaviour:
