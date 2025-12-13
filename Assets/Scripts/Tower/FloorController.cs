@@ -6,9 +6,7 @@ public class FloorController : MonoBehaviour
 {
     public static FloorController Instance { get; private set; }
 
-    public int floor = 0;
-    private AsyncOperation sceneLoadingUpOperation;
-    private AsyncOperation sceneLoadingDownOperation;
+     public int floor = 0;
     private bool isRebooting = false;
 
     private void Awake()
@@ -34,36 +32,11 @@ public class FloorController : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (scene.buildIndex != 1) return;
         isRebooting = false;
-        StartCoroutine(PreloadSceneRoutine());
     }
 
-    private IEnumerator PreloadSceneRoutine()
-    {
-        // We wait a frame to let the new scene initialize before we start loading it again.
-        yield return null; 
-
-        // Unity allows only one async scene load operation at a time.
-        // We prioritize preloading the 'up' movement.
-        sceneLoadingUpOperation = SceneManager.LoadSceneAsync(1);
-        if (sceneLoadingUpOperation != null)
-        {
-            sceneLoadingUpOperation.allowSceneActivation = false;
-        }
-
-        if (floor <= 1)
-        {
-            // 'Down' would go to a different scene (0), which we can't preload.
-            sceneLoadingDownOperation = null;
-        }
-        else
-        {
-            // 'Down' goes to the same scene as 'up' (1), so we can reuse the operation.
-            sceneLoadingDownOperation = sceneLoadingUpOperation;
-        }
-    }
-
-    private void Reboot(AsyncOperation sceneLoadingOperation)
+    private void Reboot()
     {
         if (isRebooting)
         {
@@ -71,32 +44,31 @@ public class FloorController : MonoBehaviour
             return;
         }
 
-        // Check if the target scene is the one we have been preloading and it's ready.
-        if (sceneLoadingOperation != null && sceneLoadingOperation.progress >= 0.9f)
-        {
-            isRebooting = true;
-            // The scene is preloaded, activate it for a fast transition.
-            sceneLoadingOperation.allowSceneActivation = true;
-        }
+        isRebooting = true;
+        SceneManager.LoadScene(1);
     }
 
     public void GoUp()
     {
         floor++;
-        Reboot(sceneLoadingUpOperation);
+        Reboot();
     }
 
     public void GoDown()
     {
         floor--;
-        if (sceneLoadingDownOperation != null)
+        if (floor < 0) // Should not happen if floor 0 is handled by GoOut
         {
-            // Use preloaded scene if available
-            Reboot(sceneLoadingDownOperation);
+            floor = 0; // Prevent negative floor
+        }
+
+        if (floor == 0) // If going to floor 0, exit tower
+        {
+            TowerDataController.Instance.GoOut();
         }
         else
         {
-            TowerDataController.Instance.GoOut();
+            Reboot();
         }
     }
 }

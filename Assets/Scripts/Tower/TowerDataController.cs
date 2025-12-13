@@ -74,6 +74,10 @@ public class TowerDataController : MonoBehaviour
     public void GoOut()
     {
         isCameOut = true;
+        if (FloorController.Instance != null)
+        {
+            FloorController.Instance.floor = 0;
+        }
         SceneManager.LoadScene(0);
     }
 }
