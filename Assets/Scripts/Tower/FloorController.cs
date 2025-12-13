@@ -96,8 +96,7 @@ public class FloorController : MonoBehaviour
         }
         else
         {
-            // Otherwise, do a blocking load. We know this case only happens when going to scene 0.
-            SceneManager.LoadScene(0);
+            TowerDataController.Instance.GoOut();
         }
     }
 }

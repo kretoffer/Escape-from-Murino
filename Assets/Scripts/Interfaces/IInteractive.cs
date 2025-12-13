@@ -1,5 +1,5 @@
 public interface IInteractive
 {
-    string name {get; set; }
+    string name { get; }
     void Interact();
 }
