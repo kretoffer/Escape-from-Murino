@@ -57,8 +57,9 @@ public class TowerDataController : MonoBehaviour
         }
     }
 
-    public void GoIn()
+    public void GoIn(TowerType towerType)
     {
+        tower = towerType;
         if (_player == null)
         {
             _player = GameObject.FindWithTag("Player");
