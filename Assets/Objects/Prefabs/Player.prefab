@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 2054569730428332002}
   - component: {fileID: 5456966391120613420}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: BaseUICanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,6 +110,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3660191502312483385}
   - {fileID: 8606734610532536693}
   - {fileID: 6628926597397038526}
   - {fileID: 6730379558944523976}
@@ -249,6 +250,83 @@ MonoBehaviour:
   hungerSlider: {fileID: 7581063474989518275}
   sanitySlider: {fileID: 7209978201578409903}
   fatigueSlider: {fileID: 1244348639281795704}
+--- !u!1 &187207349996964128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3660191502312483385}
+  - component: {fileID: 5289859146413713107}
+  - component: {fileID: 5346508283303090012}
+  m_Layer: 5
+  m_Name: clues
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3660191502312483385
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187207349996964128}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6073463154162208019}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 240}
+  m_SizeDelta: {x: 600, y: 490}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5289859146413713107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187207349996964128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 30
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &5346508283303090012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187207349996964128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f69ab91cb72243cea508c5511bf103c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cluePrefab: {fileID: 4054293493471772258, guid: e64598e2c0060ff8eb4dec5d631b1d28, type: 3}
+  _parent: {fileID: 3660191502312483385}
 --- !u!1 &395255640210902181
 GameObject:
   m_ObjectHideFlags: 0
@@ -2614,6 +2692,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionDistance: 5
+  _cluesController: {fileID: 5346508283303090012}
+  interactClue: {fileID: -350799439, guid: f428f19d014d542d0895305ed3b54561, type: 3}
+  pickClue: {fileID: -1079795722, guid: f428f19d014d542d0895305ed3b54561, type: 3}
+  memotyClue: {fileID: 1310473795, guid: f428f19d014d542d0895305ed3b54561, type: 3}
 --- !u!114 &1322080149048120340
 MonoBehaviour:
   m_ObjectHideFlags: 0

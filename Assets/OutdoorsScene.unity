@@ -528,6 +528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 0
+  towerType: 0
 --- !u!114 &679791901 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7781589478377826834, guid: 192a33f1eddf60ab0997bdd600d27935, type: 3}
@@ -883,6 +884,22 @@ PrefabInstance:
       objectReference: {fileID: 1065968685}
     - target: {fileID: 1893941912259841985, guid: 192a33f1eddf60ab0997bdd600d27935, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034703018706803159, guid: 192a33f1eddf60ab0997bdd600d27935, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034703018706803159, guid: 192a33f1eddf60ab0997bdd600d27935, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034703018706803159, guid: 192a33f1eddf60ab0997bdd600d27935, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034703018706803159, guid: 192a33f1eddf60ab0997bdd600d27935, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5146131315156363586, guid: 192a33f1eddf60ab0997bdd600d27935, type: 3}
