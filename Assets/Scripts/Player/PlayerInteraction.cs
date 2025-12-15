@@ -35,72 +35,82 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        Ray ray = new Ray(_cameraTransform.position, _cameraTransform.forward);
-        GameObject currentFocusedObject = null;
-
-        if (Physics.Raycast(ray, out RaycastHit hit, _interactionDistance))
+        private void Update()
         {
-            currentFocusedObject = hit.collider.gameObject;
-
-            // Handle IInteractive
-            if (hit.collider.TryGetComponent(out IInteractive interactiveObject))
+            Ray ray = new Ray(_cameraTransform.position, _cameraTransform.forward);
+            GameObject currentFocusedObject = null;
+    
+            if (Physics.Raycast(ray, out RaycastHit hit, _interactionDistance))
             {
-                if (Input.GetKeyDown(KeyCode.C))
+                currentFocusedObject = hit.collider.gameObject;
+    
+                // Handle IInteractive
+                if (hit.collider.TryGetComponent(out IInteractive interactiveObject))
                 {
-                    interactiveObject.Interact();
-                }
-            }
-
-            // Handle IPicked
-            if (hit.collider.TryGetComponent(out IPicked pickedObject))
-            {
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    if (_handInventory.TryEquip(pickedObject.item))
+                    if (Input.GetKeyDown(KeyCode.C))
                     {
-                        pickedObject.Pick();
+                        interactiveObject.Interact();
+                    }
+                }
+    
+                // Handle IPicked
+                if (hit.collider.TryGetComponent(out IPicked pickedObject))
+                {
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {                   
+                        if (_handInventory.TryEquip(pickedObject.item))
+                        {
+                            pickedObject.Pick();
+                        }
+                    }
+                }
+    
+                // Handle IMemoryable
+                if (hit.collider.TryGetComponent(out IMemoryable memoryabledObject))
+                {
+                    if (Input.GetKeyDown(KeyCode.V))
+                    {
+                        _memories.AddMemory(memoryabledObject.memory);
+                        memoryabledObject.Save();
                     }
                 }
             }
-
-            // Handle IMemoryable
-            if (hit.collider.TryGetComponent(out IMemoryable memoryabledObject))
+    
+            if (currentFocusedObject != _focusedGameObject)
             {
-                if (Input.GetKeyDown(KeyCode.V))
+                if (_focusedGameObject != null && _focusedGameObject.TryGetComponent<IFocusable>(out IFocusable oldFocusable))
+                    oldFocusable.OnEndFocus();
+                
+                _focusedGameObject = currentFocusedObject;
+                
+                if (_focusedGameObject != null && _focusedGameObject.TryGetComponent<IFocusable>(out IFocusable newFocusable))
+                    newFocusable.OnBeginFocus();
+    
+                foreach (var clue in _activeClues)
                 {
-                    _memories.AddMemory(memoryabledObject.memory);
-                    memoryabledObject.Save();
+                    _cluesController.Remove(clue);
+                }
+                _activeClues.Clear();
+    
+                if (_focusedGameObject != null)
+                {
+                    if (_focusedGameObject.TryGetComponent<IInteractive>(out IInteractive interactiveObject))
+                    {
+                        _activeClues.Add(_cluesController.Create(interactiveObject.name, interactClue));
+                    }
+                    if (_focusedGameObject.TryGetComponent<IPicked>(out _))
+                    {
+                        _activeClues.Add(_cluesController.Create("Pick up", pickClue));
+                    }
+                    if (_focusedGameObject.TryGetComponent<IMemoryable>(out _))
+                    {
+                        _activeClues.Add(_cluesController.Create("Remember", memotyClue));
+                    }
                 }
             }
-        }
-
-        if (currentFocusedObject != _focusedGameObject)
-        {
-            _focusedGameObject = currentFocusedObject;
-
-            foreach (var clue in _activeClues)
+            else
             {
-                _cluesController.Remove(clue);
+                if (_focusedGameObject != null && _focusedGameObject.TryGetComponent<IFocusable>(out IFocusable focusableObject))
+                    focusableObject.OnStartFocus();
             }
-            _activeClues.Clear();
-
-            if (_focusedGameObject != null)
-            {
-                if (_focusedGameObject.TryGetComponent<IInteractive>(out IInteractive interactiveObject))
-                {
-                    _activeClues.Add(_cluesController.Create(interactiveObject.name, interactClue));
-                }
-                if (_focusedGameObject.TryGetComponent<IPicked>(out _))
-                {
-                    _activeClues.Add(_cluesController.Create("Pick up", pickClue));
-                }
-                if (_focusedGameObject.TryGetComponent<IMemoryable>(out _))
-                {
-                    _activeClues.Add(_cluesController.Create("Remember", memotyClue));
-                }
-            }
-        }
-    }
-}
+        }}

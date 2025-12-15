@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class ElevatorButtons : InteractiveObject
+public class ElevatorButtons : MonoBehaviour, IInteractive
 {
     public enum Direction { Up, Down }
+    public string name { get; private set; }
     [SerializeField] private Direction direction = Direction.Up;
 
-    override public void Interact()
+    public void Interact()
     {
         if (direction == Direction.Up)
         {
