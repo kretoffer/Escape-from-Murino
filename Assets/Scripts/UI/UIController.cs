@@ -38,7 +38,7 @@ public class UIController : MonoBehaviour
                 }
 
                 if (activeMenu != null)
-                    activeMenu.SetActive(false);
+                    continue;
 
                 activeMenu = menus[i];
                 activeMenu.SetActive(true);
